@@ -1,38 +1,33 @@
-package com.fitness;
+package com.fitness.client;
 
-import com.fitness.facade_pattern.facade.WorkoutPlanFacade;
-import com.fitness.facade_pattern.model.WorkoutPlanConfiguration;
+import com.fitness.observer_pattern.manager.ObservableWorkoutPlanManager;
+import com.fitness.observer_pattern.concreteObservers.UserNotificationObserver;
+import com.fitness.observer_pattern.concreteObservers.ProgressTrackingObserver;
+import com.fitness.observer_pattern.concreteObservers.LoggingObserver;
 import com.fitness.builder_pattern.product.WorkoutPlan;
 
 public class Client {
     public static void main(String[] args) {
-        WorkoutPlanFacade workoutFacade = new WorkoutPlanFacade();
+        // Create observable manager
+        ObservableWorkoutPlanManager manager = new ObservableWorkoutPlanManager();
 
-        // Pre-defined plans
-        WorkoutPlan beginner = workoutFacade.createBeginnerPlan();
-        WorkoutPlan fatLoss = workoutFacade.createFatLossPlan();
+        // Register observers
+        manager.registerObserver(new UserNotificationObserver("John Doe"));
+        manager.registerObserver(new ProgressTrackingObserver());
+        manager.registerObserver(new LoggingObserver());
 
-        System.out.println("Beginner Plan: " + beginner);
-        System.out.println("Fat Loss Plan: " + fatLoss);
+        System.out.println("=== Creating Workout Plans ===\n");
 
-        // Quick plan creation
-        WorkoutPlan quickPlan = workoutFacade.createQuickPlan("intermediate", "strength", 40);
-        System.out.println("Quick Plan: " + quickPlan);
-
-        // Fully customized plan
-        WorkoutPlan customPlan = workoutFacade.createCustomPlan(
-                WorkoutPlanConfiguration.builder()
-                        .name("My Personal Training Plan")
-                        .level("advanced")
-                        .intensity("high")
-                        .durationMinutes(60)
-                        .goal("muscle-building")
-                        .addExercise("Bench Press", "Chest development")
-                        .addExercise("Deadlifts", "Full body strength")
-                        .addExercise("Pull-ups", "Back and arm strength")
-                        .build()
+        // These will trigger all observers
+        WorkoutPlan beginnerPlan = manager.getPredefinedPlan("beginner");
+        WorkoutPlan fatLossPlan = manager.getPredefinedPlan("fatloss");
+        WorkoutPlan customPlan = manager.createCustomPlan(
+                "My Personal Plan", "intermediate", "high", 45, "weight-loss"
         );
 
-        System.out.println("Custom Plan: " + customPlan);
+        System.out.println("\n=== Plan Details ===");
+        System.out.println("Beginner Plan: " + beginnerPlan.getName());
+        System.out.println("Fat Loss Plan: " + fatLossPlan.getName());
+        System.out.println("Custom Plan: " + customPlan.getName());
     }
 }
