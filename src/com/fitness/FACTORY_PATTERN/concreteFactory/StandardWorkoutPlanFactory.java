@@ -2,7 +2,7 @@ package com.fitness.FACTORY_PATTERN.concreteFactory;
 
 import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
 import com.fitness.BUILDER_PATTERN.concrete_builders.BeginnerWorkoutPlanBuilder;
-import com.fitness.BUILDER_PATTERN.concrete_builders.CustomWorkoutPlanBuilder;
+import com.fitness.BUILDER_PATTERN.concrete_builders.WorkoutPlanConcreteBuilder;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 import com.fitness.FACTORY_PATTERN.director.*;
 import com.fitness.FACTORY_PATTERN.interfaces.PlanDirector;
@@ -18,10 +18,10 @@ public class StandardWorkoutPlanFactory implements WorkoutPlanFactory {
 
     public StandardWorkoutPlanFactory() {
         registerBuilder("beginner", BeginnerWorkoutPlanBuilder::new);
-        registerBuilder("custom", CustomWorkoutPlanBuilder::new);
-        registerBuilder("fatloss", CustomWorkoutPlanBuilder::new);
-        registerBuilder("strength", CustomWorkoutPlanBuilder::new);
-        registerBuilder("cardio", CustomWorkoutPlanBuilder::new);
+        registerBuilder("custom", WorkoutPlanConcreteBuilder::new);
+        registerBuilder("fatloss", WorkoutPlanConcreteBuilder::new);
+        registerBuilder("strength", WorkoutPlanConcreteBuilder::new);
+        registerBuilder("cardio", WorkoutPlanConcreteBuilder::new);
 
         registerPlan("beginner", new DefaultPlanDirector());
         registerPlan("custom", new DefaultPlanDirector());

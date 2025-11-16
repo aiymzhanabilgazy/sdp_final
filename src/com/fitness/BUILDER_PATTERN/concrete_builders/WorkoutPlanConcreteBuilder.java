@@ -5,11 +5,11 @@ import com.fitness.BUILDER_PATTERN.product.Exercise;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 
 
-public class CustomWorkoutPlanBuilder implements WorkoutPlanBuilder {
+public class WorkoutPlanConcreteBuilder implements WorkoutPlanBuilder {
 
     protected WorkoutPlan plan;
 
-    public CustomWorkoutPlanBuilder() {
+    public WorkoutPlanConcreteBuilder() {
         reset();
     }
 

@@ -11,8 +11,6 @@ public class WorkoutPlan {
     private String goal;
     private List<Exercise> exercises = new ArrayList<>();
 
-    public WorkoutPlan() {}
-
     public String getName() { return name; }
     public String getLevel() { return level; }
     public String getIntensity() { return intensity; }
@@ -27,7 +25,7 @@ public class WorkoutPlan {
     public void setGoal(String goal) { this.goal = goal; }
 
     public void addExercise(Exercise exercise) {
-        this.exercises.add(exercise);
+        exercises.add(exercise);
     }
 
     @Override
