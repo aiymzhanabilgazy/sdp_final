@@ -20,7 +20,6 @@ public class MaxCaloriesVisitor implements IWorkoutVisitor {
 
     @Override
     public void visitWorkoutPlan(WorkoutPlanElement plan) {
-        // обработка не нужна
     }
 
     public ExerciseElement getMaxExercise() {

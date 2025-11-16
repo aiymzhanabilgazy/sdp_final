@@ -10,7 +10,7 @@ public class CaloriesSumVisitor implements IWorkoutVisitor {
 
     @Override
     public void visitWorkoutPlan(WorkoutPlanElement plan) {
-        // nothing
+
     }
 
     @Override

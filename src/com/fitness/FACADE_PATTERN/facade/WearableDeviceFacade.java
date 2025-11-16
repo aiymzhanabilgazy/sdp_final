@@ -23,7 +23,6 @@ public class WearableDeviceFacade implements IWearableDeviceManager {
         if (devices.isEmpty()) {
             return 0;
         }
-
         int sum = 0;
         for (IWearableAPI d : devices) {
             sum += d.getHeartRate();

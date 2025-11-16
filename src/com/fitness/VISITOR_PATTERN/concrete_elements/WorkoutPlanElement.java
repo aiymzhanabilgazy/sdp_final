@@ -20,7 +20,6 @@ public class WorkoutPlanElement implements IWorkoutElement {
     public void accept(IWorkoutVisitor visitor) {
         visitor.visitWorkoutPlan(this);
 
-        // visit each exercise
         plan.getExercises().forEach(ex ->
                 new ExerciseElement(ex).accept(visitor)
         );
