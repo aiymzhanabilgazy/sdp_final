@@ -39,6 +39,8 @@ public class BeginnerWorkoutPlanBuilder implements IWorkoutPlanBuilder {
     }
     @Override
     public WorkoutPlan getResult() {
-        return plan;
+        WorkoutPlan result = this.plan;
+        reset();
+        return result;
     }
 }
