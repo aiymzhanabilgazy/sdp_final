@@ -1,26 +1,28 @@
 package com.fitness.OBSERVER_PATTERN.subject;
 
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
-import com.fitness.OBSERVER_PATTERN.observer.WorkoutPlanObserver;
-
+import com.fitness.OBSERVER_PATTERN.observer.IWorkoutPlanObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkoutPlanEventManager {
+public class WorkoutPlanEventManager implements IWorkoutPlanPublisher {
 
-    private final List<WorkoutPlanObserver> observers = new ArrayList<>();
+    private List<IWorkoutPlanObserver> observers = new ArrayList<>();
 
-    public void subscribe(WorkoutPlanObserver observer) {
+    @Override
+    public void subscribe(IWorkoutPlanObserver observer) {
         observers.add(observer);
     }
 
-    public void unsubscribe(WorkoutPlanObserver observer) {
+    @Override
+    public void unsubscribe(IWorkoutPlanObserver observer) {
         observers.remove(observer);
     }
 
-    public void notifyAll(WorkoutPlan plan) {
-        for (WorkoutPlanObserver obs : observers) {
-            obs.onPlanCreated(plan);
+    @Override
+    public void notifyObservers(WorkoutPlan plan) {
+        for (IWorkoutPlanObserver observer : observers) {
+            observer.update(plan);
         }
     }
 }

@@ -1,13 +1,13 @@
 package com.fitness.FACTORY_PATTERN.concreteFactory;
 
 import com.fitness.BUILDER_PATTERN.builder.IWorkoutPlanBuilder;
-import com.fitness.BUILDER_PATTERN.concrete_builders.BeginnerWorkoutPlanBuilder;
-import com.fitness.FACTORY_PATTERN.factory.WorkoutPlanFactory;
+import com.fitness.BUILDER_PATTERN.concrete_builders.CustomWorkoutPlanBuilder;
+import com.fitness.FACTORY_PATTERN.factory.IWorkoutPlanFactory;
 
-public class FatLossPlanFactory implements WorkoutPlanFactory {
+public class FatLossPlanFactory implements IWorkoutPlanFactory {
 
     @Override
     public IWorkoutPlanBuilder createBuilder() {
-        return new BeginnerWorkoutPlanBuilder();
+        return new CustomWorkoutPlanBuilder();
     }
 }
