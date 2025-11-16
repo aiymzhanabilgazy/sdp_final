@@ -4,6 +4,7 @@ import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
 import com.fitness.BUILDER_PATTERN.product.Exercise;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 
+
 public class CustomWorkoutPlanBuilder implements WorkoutPlanBuilder {
 
     protected WorkoutPlan plan;
@@ -13,9 +14,8 @@ public class CustomWorkoutPlanBuilder implements WorkoutPlanBuilder {
     }
 
     @Override
-    public WorkoutPlanBuilder reset() {
-        this.plan = new WorkoutPlan();
-        return this;
+    public void reset() {
+        plan = new WorkoutPlan();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CustomWorkoutPlanBuilder implements WorkoutPlanBuilder {
     @Override
     public WorkoutPlan build() {
         WorkoutPlan result = plan;
-        reset(); // allows builder reuse
+        reset();
         return result;
     }
 }

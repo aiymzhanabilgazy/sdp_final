@@ -3,8 +3,7 @@ package com.fitness.BUILDER_PATTERN.builder;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 
 public interface WorkoutPlanBuilder {
-
-    WorkoutPlanBuilder reset();  // <<<< ИСПРАВЛЕНИЕ
+    void reset();
 
     WorkoutPlanBuilder setName(String name);
     WorkoutPlanBuilder setLevel(String level);
