@@ -1,11 +1,15 @@
 package com.fitness.FACADE_PATTERN.subsystems;
 
-public class FitbitAPI implements WearableAPI {
+public class FitbitAPI implements IWearableAPI {
 
     private String deviceId;
+    private int heartRate;
+    private int steps;
 
-    public FitbitAPI(String deviceId) {
+    public FitbitAPI(String deviceId, int heartRate, int steps) {
         this.deviceId = deviceId;
+        this.heartRate = heartRate;
+        this.steps = steps;
     }
 
     @Override
@@ -15,12 +19,11 @@ public class FitbitAPI implements WearableAPI {
 
     @Override
     public int getHeartRate() {
-        return 128;
+        return heartRate;
     }
 
     @Override
     public int getSteps() {
-        return 7400;
+        return steps;
     }
 }
-

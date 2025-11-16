@@ -14,6 +14,12 @@ import com.fitness.OBSERVER_PATTERN.subject.WorkoutPlanEventManager;
 import com.fitness.OBSERVER_PATTERN.concreteObserver.WorkoutPlanLogger;
 import com.fitness.OBSERVER_PATTERN.concreteObserver.UserNotificationObserver;
 
+import com.fitness.FACADE_PATTERN.facade.IWearableDeviceManager;
+import com.fitness.FACADE_PATTERN.facade.WearableDeviceFacade;
+import com.fitness.FACADE_PATTERN.subsystems.AppleHealthAPI;
+import com.fitness.FACADE_PATTERN.subsystems.FitbitAPI;
+import com.fitness.FACADE_PATTERN.subsystems.GarminAPI;
+
 import java.util.List;
 
 public class Client {
@@ -77,7 +83,6 @@ public class Client {
         );
 
 
-
         // -------------------------------------------------------
         // DISPLAY RESULTS
         // -------------------------------------------------------
@@ -86,7 +91,22 @@ public class Client {
 
         System.out.println("\n=== FAT LOSS PLAN ===");
         System.out.println(fatLossPlan);
+        // ===================================================================
+        //                         FACADE PATTERN (NEW SECTION)
+        // ===================================================================
+        System.out.println("\n===== FACADE PATTERN DEMO =====");
 
+        IWearableDeviceManager facade = new WearableDeviceFacade();
+
+        // Register wearable devices (subsystem objects)
+        facade.registerDevice(new FitbitAPI("Fitbit-X12", 128, 7450));
+        facade.registerDevice(new GarminAPI("Garmin-Pro44", 122, 6800));
+        facade.registerDevice(new AppleHealthAPI("Apple-Health-01", 136, 8200));
+
+        // Client receives simplified API
+        System.out.println("Connected devices: " + facade.listDeviceIds());
+        System.out.println("Average heart rate: " + facade.getAverageHeartRate());
+        System.out.println("Total steps today: " + facade.getTotalSteps());
     }
 
 
@@ -117,5 +137,7 @@ public class Client {
         );
 
         return manager.finalizePlan(builder);
+
+
     }
 }

@@ -1,22 +1,29 @@
 package com.fitness.FACADE_PATTERN.subsystems;
 
-public class GarminAPI implements WearableAPI {
+public class GarminAPI implements IWearableAPI {
 
     private String deviceId;
+    private int heartRate;
+    private int steps;
 
-    public GarminAPI(String deviceId) {
+    public GarminAPI(String deviceId, int heartRate, int steps) {
         this.deviceId = deviceId;
+        this.heartRate = heartRate;
+        this.steps = steps;
     }
+
     @Override
     public String getDeviceId() {
         return deviceId;
     }
+
     @Override
     public int getHeartRate() {
-        return 122;
+        return heartRate;
     }
+
     @Override
     public int getSteps() {
-        return 6300;
+        return steps;
     }
 }
