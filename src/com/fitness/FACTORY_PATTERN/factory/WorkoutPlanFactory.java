@@ -1,7 +1,7 @@
 package com.fitness.FACTORY_PATTERN.factory;
 
-import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
+import com.fitness.BUILDER_PATTERN.builder.IWorkoutPlanBuilder;
 
 public interface WorkoutPlanFactory {
-    WorkoutPlanBuilder createBuilder();
+    IWorkoutPlanBuilder createBuilder();
 }

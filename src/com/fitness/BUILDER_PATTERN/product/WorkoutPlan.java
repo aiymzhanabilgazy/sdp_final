@@ -23,7 +23,6 @@ public class WorkoutPlan {
     public void setIntensity(String intensity) { this.intensity = intensity; }
     public void setDurationMinutes(int durationMinutes) { this.durationMinutes = durationMinutes; }
     public void setGoal(String goal) { this.goal = goal; }
-
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
     }
