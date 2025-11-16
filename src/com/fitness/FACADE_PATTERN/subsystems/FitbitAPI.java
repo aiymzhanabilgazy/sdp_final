@@ -15,13 +15,11 @@ public class FitbitAPI implements WearableAPI {
 
     @Override
     public int getHeartRate() {
-        // симуляция получения данных
         return 128;
     }
 
     @Override
     public int getSteps() {
-        // симулируем
         return 7400;
     }
 }
