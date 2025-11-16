@@ -13,8 +13,9 @@ public class CustomWorkoutPlanBuilder implements WorkoutPlanBuilder {
     }
 
     @Override
-    public void reset() {
-        plan = new WorkoutPlan();
+    public WorkoutPlanBuilder reset() {
+        this.plan = new WorkoutPlan();
+        return this;
     }
 
     @Override

@@ -1,30 +1,58 @@
-
 package com.fitness.OBSERVER_PATTERN.manager;
 
-import com.fitness.FACTORY_PATTERN.interfaces.WorkoutPlanFactory;
 import com.fitness.FACTORY_PATTERN.concreteFactory.StandardWorkoutPlanFactory;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
+import com.fitness.FACTORY_PATTERN.interfaces.WorkoutPlanFactory;
+import com.fitness.OBSERVER_PATTERN.config.NotificationEvent;
 import com.fitness.OBSERVER_PATTERN.interfaces.WorkoutPlanObserver;
 import com.fitness.OBSERVER_PATTERN.interfaces.WorkoutPlanSubject;
+import com.fitness.OBSERVER_PATTERN.util.MessageFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObservableWorkoutPlanManager implements WorkoutPlanSubject {
+
     private WorkoutPlanFactory factory;
     private List<WorkoutPlanObserver> observers = new ArrayList<>();
 
-    public ObservableWorkoutPlanManager() {
+    public ObservableWorkoutPlanManager(StandardWorkoutPlanFactory standardWorkoutPlanFactory) {
         this.factory = new StandardWorkoutPlanFactory();
     }
-    
-    public ObservableWorkoutPlanManager(WorkoutPlanFactory factory) {
-        this.factory = factory;
+
+    public WorkoutPlan getPredefinedPlan(String type) {
+        WorkoutPlan plan = factory.createPlan(type);
+        notifyEvent(NotificationEvent.PLAN_CREATED, plan, null);
+        return plan;
     }
 
-    public void setObservers(List<WorkoutPlanObserver> observers) {
-        this.observers = observers;
+    public WorkoutPlanBuilder getBuilderForCustomPlan() {
+        notifyEvent(NotificationEvent.BUILDER_REQUESTED, null, null);
+        return factory.getBuilder("custom");
+    }
+
+    public WorkoutPlan createCustomPlan(String name, String level, String intensity, int duration, String goal) {
+        WorkoutPlanBuilder builder = getBuilderForCustomPlan();
+        WorkoutPlan plan = builder
+                .setName(name)
+                .setLevel(level)
+                .setIntensity(intensity)
+                .setDurationMinutes(duration)
+                .setGoal(goal).build();
+
+        notifyEvent(NotificationEvent.CUSTOM_PLAN_CREATED, plan, null);
+        return plan;
+    }
+
+    public void setFactory(WorkoutPlanFactory factory) {
+        this.factory = factory;
+        notifyEvent(NotificationEvent.FACTORY_CHANGED, null, null);
+    }
+
+    private void notifyEvent(NotificationEvent event, WorkoutPlan plan, String custom) {
+        String msg = MessageFormatter.format(event, plan, custom);
+        for (WorkoutPlanObserver o : observers) o.update(msg, plan);
     }
 
     @Override
@@ -38,44 +66,7 @@ public class ObservableWorkoutPlanManager implements WorkoutPlanSubject {
     }
 
     @Override
-    public void notifyObservers(String message) {
-        for (WorkoutPlanObserver observer : observers) {
-            observer.update(message, null);
-        }
-    }
-
-    private void notifyObservers(String message, WorkoutPlan plan) {
-        for (WorkoutPlanObserver observer : observers) {
-            observer.update(message, plan);
-        }
-    }
-
-    public WorkoutPlan getPredefinedPlan(String planType) {
-        WorkoutPlan plan = factory.createPlan(planType);
-        notifyObservers("New workout plan created: " + planType, plan);
-        return plan;
-    }
-    
-    public WorkoutPlanBuilder getBuilderForCustomPlan() {
-        notifyObservers("Custom workout builder requested");
-        return factory.getBuilder("custom");
-    }
-    
-    public WorkoutPlan createCustomPlan(String name, String level, String intensity, 
-                                      int duration, String goal) {
-        WorkoutPlanBuilder builder = getBuilderForCustomPlan();
-        WorkoutPlan plan = builder.setName(name)
-                     .setLevel(level)
-                     .setIntensity(intensity)
-                     .setDurationMinutes(duration)
-                     .setGoal(goal)
-                     .build();
-        notifyObservers("Custom workout plan created: " + name, plan);
-        return plan;
-    }
-
-    public void setFactory(WorkoutPlanFactory factory) {
-        this.factory = factory;
-        notifyObservers("Workout plan factory changed");
+    public void notifyObservers(String msg) {
+        notifyEvent(NotificationEvent.GENERIC, null, msg);
     }
 }

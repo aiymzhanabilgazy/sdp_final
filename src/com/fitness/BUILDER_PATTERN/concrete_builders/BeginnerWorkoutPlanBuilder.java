@@ -1,9 +1,11 @@
 package com.fitness.BUILDER_PATTERN.concrete_builders;
 
+import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
+
 public class BeginnerWorkoutPlanBuilder extends CustomWorkoutPlanBuilder {
 
     @Override
-    public void reset() {
+    public WorkoutPlanBuilder reset() {
         super.reset();
 
         setName("Beginner Workout Program");
@@ -15,5 +17,7 @@ public class BeginnerWorkoutPlanBuilder extends CustomWorkoutPlanBuilder {
         addExercise("Jumping Jacks", "Light full-body warmup");
         addExercise("Bodyweight Squats", "Basic lower-body strength");
         addExercise("Knee Push-ups", "Beginner upper-body strength");
+
+        return this;
     }
 }

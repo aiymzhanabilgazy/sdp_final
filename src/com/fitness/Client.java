@@ -19,27 +19,20 @@ import com.fitness.VISITOR_PATTERN.concrete_visitors.CaloriesSumVisitor;
 public class Client {
 
     public static void main(String[] args) {
-        // --------------------------------------------------------
-        //  WORKOUT PLANS CREATION
-        // --------------------------------------------------------
 
         ObservableWorkoutPlanManager manager =
                 new ObservableWorkoutPlanManager(new StandardWorkoutPlanFactory());
 
-        // Register observers
         manager.registerObserver(new UserNotificationObserver("John Doe"));
         manager.registerObserver(new ProgressTrackingObserver());
         manager.registerObserver(new LoggingObserver());
 
         System.out.println("Creating predefined workout plans...\n");
 
-        // Factory creates Beginner (uses Beginner builder)
         WorkoutPlan beginner = manager.getPredefinedPlan("beginner");
 
-        // Factory uses Director to build FatLoss plan
         WorkoutPlan fatLoss = manager.getPredefinedPlan("fatloss");
 
-        // Builder creates custom plan
         WorkoutPlan custom = manager.createCustomPlan(
                 "My Personal Plan",
                 "intermediate",
@@ -54,9 +47,6 @@ public class Client {
         System.out.println("Custom Plan:   " + custom.getName());
 
 
-        // --------------------------------------------------------
-        // 2. FACADE — COMBINE DATA FROM MULTIPLE DEVICES
-        // --------------------------------------------------------
         WearableDeviceFacade facade = new WearableDeviceFacade();
         facade.registerDevice(new FitbitAPI("fitbit-001"));
         facade.registerDevice(new GarminAPI("garmin-002"));
@@ -69,9 +59,6 @@ public class Client {
         System.out.println("Devices connected: " + facade.listDeviceIds());
 
 
-        // --------------------------------------------------------
-        // 3. VISITOR — CALORIES CALCULATION
-        // --------------------------------------------------------
         ExerciseElement e1 = new ExerciseElement("Burpees", 120);
         ExerciseElement e2 = new ExerciseElement("Jump Rope", 200);
         ExerciseElement e3 = new ExerciseElement("Squats", 80);
@@ -86,9 +73,6 @@ public class Client {
                 caloriesVisitor.getTotalCalories() + " kcal");
 
 
-        // --------------------------------------------------------
-        // END
-        // --------------------------------------------------------
         System.out.println("\n=============================================");
         System.out.println("            SYSTEM DEMO FINISHED");
         System.out.println("=============================================");

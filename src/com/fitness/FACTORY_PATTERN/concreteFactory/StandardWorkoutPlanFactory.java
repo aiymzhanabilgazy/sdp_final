@@ -3,96 +3,59 @@ package com.fitness.FACTORY_PATTERN.concreteFactory;
 import com.fitness.BUILDER_PATTERN.builder.WorkoutPlanBuilder;
 import com.fitness.BUILDER_PATTERN.concrete_builders.BeginnerWorkoutPlanBuilder;
 import com.fitness.BUILDER_PATTERN.concrete_builders.CustomWorkoutPlanBuilder;
-import com.fitness.BUILDER_PATTERN.director.WorkoutPlanDirector;
 import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
+import com.fitness.FACTORY_PATTERN.director.*;
+import com.fitness.FACTORY_PATTERN.interfaces.PlanDirector;
 import com.fitness.FACTORY_PATTERN.interfaces.WorkoutPlanFactory;
 
-public class StandardWorkoutPlanFactory implements WorkoutPlanFactory {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
-    private final WorkoutPlanDirector director;
+public class StandardWorkoutPlanFactory implements WorkoutPlanFactory {
+    private final Map<String, Supplier<WorkoutPlanBuilder>> builderRegistry = new HashMap<>();
+    private final Map<String, PlanDirector> planRegistry = new HashMap<>();
 
     public StandardWorkoutPlanFactory() {
-        this.director = new WorkoutPlanDirector();
+        registerBuilder("beginner", BeginnerWorkoutPlanBuilder::new);
+        registerBuilder("custom", CustomWorkoutPlanBuilder::new);
+        registerBuilder("fatloss", CustomWorkoutPlanBuilder::new);
+        registerBuilder("strength", CustomWorkoutPlanBuilder::new);
+        registerBuilder("cardio", CustomWorkoutPlanBuilder::new);
+
+        registerPlan("beginner", new DefaultPlanDirector());
+        registerPlan("custom", new DefaultPlanDirector());
+        registerPlan("fatloss", new FatLossPlanDirector());
+        registerPlan("strength", new StrengthPlanDirector());
+        registerPlan("cardio", new CardioPlanDirector());
+        registerPlan("default", new DefaultPlanDirector());
+    }
+
+    private void registerBuilder(String key, Supplier<WorkoutPlanBuilder> supplier) {
+        builderRegistry.put(key.toLowerCase(), supplier);
+    }
+
+    private void registerPlan(String key, PlanDirector director) {
+        planRegistry.put(key.toLowerCase(), director);
     }
 
     @Override
     public WorkoutPlan createPlan(String planType) {
-        WorkoutPlanBuilder builder = getBuilder(planType);
+        String key = planType.toLowerCase();
 
-        switch (planType.toLowerCase()) {
-            case "beginner":
-                return ((BeginnerWorkoutPlanBuilder) builder).build();
+        WorkoutPlanBuilder builder =
+                builderRegistry.getOrDefault(key, builderRegistry.get("custom")).get();
 
-            case "fatloss":
-                return director.createFatLossPlan(builder);
+        PlanDirector director =
+                planRegistry.getOrDefault(key, planRegistry.get("default"));
 
-            case "custom":
-                // Return empty custom builder for manual configuration
-                return builder.build();
-
-            case "strength":
-                return createStrengthPlan(builder);
-
-            case "cardio":
-                return createCardioPlan(builder);
-
-            default:
-                return createDefaultPlan(builder); // Return default plan instead of throwing exception
-        }
+        return director.create(builder);
     }
 
     @Override
-    public WorkoutPlanBuilder getBuilder(String builderType) {
-        switch (builderType.toLowerCase()) {
-            case "beginner":
-                return new BeginnerWorkoutPlanBuilder();
-
-            case "fatloss":
-            case "strength":
-            case "cardio":
-            case "custom":
-                return new CustomWorkoutPlanBuilder();
-
-            default:
-                return new CustomWorkoutPlanBuilder(); // Return default builder instead of throwing exception
-        }
-    }
-
-    private WorkoutPlan createStrengthPlan(WorkoutPlanBuilder builder) {
-        builder.reset();
-        builder.setName("Strength Building Program")
-                .setLevel("intermediate")
-                .setIntensity("high")
-                .setDurationMinutes(60)
-                .setGoal("strength")
-                .addExercise("Barbell Squats", "Heavy compound movement")
-                .addExercise("Bench Press", "Upper body strength")
-                .addExercise("Deadlifts", "Posterior chain development");
-        return builder.build();
-    }
-
-    private WorkoutPlan createCardioPlan(WorkoutPlanBuilder builder) {
-        builder.reset();
-        builder.setName("Cardio Endurance Program")
-                .setLevel("beginner")
-                .setIntensity("medium")
-                .setDurationMinutes(40)
-                .setGoal("endurance")
-                .addExercise("Running", "30 minutes steady state")
-                .addExercise("Cycling", "Interval training")
-                .addExercise("Jump Rope", "Coordination and cardio");
-        return builder.build();
-    }
-
-    private WorkoutPlan createDefaultPlan(WorkoutPlanBuilder builder) {
-        builder.reset();
-        builder.setName("Default Workout Program")
-                .setLevel("beginner")
-                .setIntensity("medium")
-                .setDurationMinutes(30)
-                .setGoal("general-fitness")
-                .addExercise("Walking", "Light cardio exercise")
-                .addExercise("Stretching", "Basic flexibility");
-        return builder.build();
+    public WorkoutPlanBuilder getBuilder(String type) {
+        return builderRegistry
+                .getOrDefault(type.toLowerCase(), builderRegistry.get("custom"))
+                .get();
     }
 }

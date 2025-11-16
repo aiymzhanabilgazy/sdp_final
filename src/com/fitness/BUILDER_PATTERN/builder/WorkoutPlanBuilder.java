@@ -1,7 +1,10 @@
 package com.fitness.BUILDER_PATTERN.builder;
 
+import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
+
 public interface WorkoutPlanBuilder {
-    void reset();
+
+    WorkoutPlanBuilder reset();  // <<<< ИСПРАВЛЕНИЕ
 
     WorkoutPlanBuilder setName(String name);
     WorkoutPlanBuilder setLevel(String level);
@@ -10,5 +13,5 @@ public interface WorkoutPlanBuilder {
     WorkoutPlanBuilder setGoal(String goal);
     WorkoutPlanBuilder addExercise(String name, String description);
 
-    com.fitness.BUILDER_PATTERN.product.WorkoutPlan build();
+    WorkoutPlan build();
 }
