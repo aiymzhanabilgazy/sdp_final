@@ -4,4 +4,5 @@ import com.fitness.BUILDER_PATTERN.product.WorkoutPlan;
 
 public interface IWorkoutPlanObserver {
     void update(WorkoutPlan plan);
+    void onHeartRateUpdate(int heartRate);
 }

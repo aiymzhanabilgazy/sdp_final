@@ -25,4 +25,10 @@ public class WorkoutPlanEventManager implements IWorkoutPlanPublisher {
             observer.update(plan);
         }
     }
+    @Override
+    public void notifyHeartRate(int heartRate){
+        for (IWorkoutPlanObserver observer : observers) {
+            observer.onHeartRateUpdate(heartRate);
+        }
+    }
 }

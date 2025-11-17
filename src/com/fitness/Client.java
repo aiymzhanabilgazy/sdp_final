@@ -36,16 +36,17 @@ public class Client {
         // OBSERVER SYSTEM
         WorkoutPlanEventManager eventManager = new WorkoutPlanEventManager();
         eventManager.subscribe(new WorkoutPlanLogger());
-        eventManager.subscribe(new UserNotificationObserver("Aiymzhan"));
+        eventManager.subscribe(new UserNotificationObserver("Aiymzhan","beginner"));
+        eventManager.subscribe(new UserNotificationObserver("Marzhan","beginner"));
+        eventManager.subscribe(new UserNotificationObserver("Mansur","fat-loss"));
 
         // FACTORY MANAGERS
-
         WorkoutPlanManager beginnerManager = new WorkoutPlanManager(new BeginnerPlanFactory(), eventManager);
         WorkoutPlanManager fatLossManager   = new WorkoutPlanManager(new FatLossPlanFactory(), eventManager);
         WorkoutPlanManager customManager    = new WorkoutPlanManager(new CustomPlanFactory(), eventManager);
 
 
-        System.out.println("\n===== FACTORY + BUILDER + OBSERVER DEMO =====");
+        System.out.println("\n===== FACTORY + BUILDER + OBSERVER =====");
 
         // BEGINNER PLAN
         WorkoutPlan beginnerPlan = buildPlan(
@@ -86,7 +87,7 @@ public class Client {
         System.out.println(fatLossPlan);
 
 
-        System.out.println("\n===== FACADE PATTERN DEMO =====");
+        System.out.println("\n===== FACADE PATTERN  =====");
 
         WearableDeviceFacade facade = new WearableDeviceFacade();
 
@@ -98,8 +99,11 @@ public class Client {
         System.out.println("Average heart rate: " + facade.getAverageHeartRate());
         System.out.println("Total steps today: " + facade.getTotalSteps());
 
+        System.out.println("\n===== HEART RATE UPDATED =====")
+        eventManager.notifyHeartRate(facade.getAverageHeartRate());
 
-        System.out.println("\n===== ADAPTER PATTERN DEMO =====");
+
+        System.out.println("\n===== ADAPTER PATTERN =====");
 
         ThirdPartyHealthAPI thirdPartyAPI = new ThirdPartyHealthAPI("ThirdParty-999");
         IWearableAPI adaptedDevice = new ThirdPartyHealthAdapter(thirdPartyAPI);
@@ -111,7 +115,7 @@ public class Client {
         System.out.println("Updated total steps: " + facade.getTotalSteps());
 
 
-        System.out.println("\n===== VISITOR PATTERN DEMO =====");
+        System.out.println("\n===== VISITOR PATTERN  =====");
 
         WorkoutPlanElement beginnerElement = new WorkoutPlanElement(beginnerPlan);
         WorkoutPlanElement fatLossElement = new WorkoutPlanElement(fatLossPlan);

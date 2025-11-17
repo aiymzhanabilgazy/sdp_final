@@ -10,4 +10,6 @@ public interface IWorkoutPlanPublisher {
     void unsubscribe(IWorkoutPlanObserver observer);
 
     void notifyObservers(WorkoutPlan plan);
+
+    void notifyHeartRate(int heartRate);
 }
